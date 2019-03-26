@@ -1,0 +1,197 @@
+{
+  "requiredDeviceNo": "0",
+  "runAsForegroundService":"false",
+  "devices":[
+    {
+      "required": "false",
+      "enable": "true",
+      "platformType": "MOTION_SENSE",
+      "version":"1.0.3.0",
+      "sensors": [
+        {
+          "id": "ACCELEROMETER",
+          "enable": "true",
+          "frequency": "25"
+        },
+        {
+          "id": "GYROSCOPE",
+          "enable": "true",
+          "frequency": "50"
+        },
+        {
+          "id": "SEQUENCE_NUMBER_MOTION",
+          "enable": "true",
+          "frequency": "25"
+        },
+        {
+          "id": "RAW_MOTION",
+          "enable": "true",
+          "frequency": "25"
+        },
+        {
+          "id": "BATTERY",
+          "enable": "true"
+        }
+      ]
+    },
+    {
+      "required": "false",
+      "enable": "true",
+      "platformType": "MOTION_SENSE_HRV",
+      "version": "1.0.1.0",
+      "sensors": [
+        {
+          "id": "ACCELEROMETER",
+          "enable": "true",
+          "frequency": "16"
+        },
+        {
+          "id": "GYROSCOPE",
+          "enable": "true",
+          "frequency": "16"
+        },
+        {
+          "id": "LED",
+          "enable": "true",
+          "frequency": "16"
+        },
+        {
+          "id": "SEQUENCE_NUMBER_MOTION",
+          "enable": "true",
+          "frequency": "16"
+        },
+        {
+          "id": "RAW_MOTION",
+          "enable": "true",
+          "frequency": "16"
+        },
+        {
+          "id": "BATTERY",
+          "enable": "true"
+        }
+      ]
+    },
+    {
+      "required": "false",
+      "enable": "true",
+      "platformType": "MOTION_SENSE_HRV_PLUS",
+      "version": "1.0.2.0",
+      "sensors": [
+        {
+          "id": "ACCELEROMETER",
+          "enable": "true",
+          "frequency": "25"
+        },
+        {
+          "id": "QUATERNION",
+          "enable": "true",
+          "frequency": "25"
+        },
+        {
+          "id": "LED",
+          "enable": "true",
+          "frequency": "25"
+        },
+        {
+          "id": "SEQUENCE_NUMBER_MOTION",
+          "enable": "true",
+          "frequency": "25"
+        },
+        {
+          "id": "RAW_MOTION",
+          "enable": "true",
+          "frequency": "25"
+        },
+        {
+          "id": "MAGNETOMETER",
+          "enable": "true",
+          "frequency": "25"
+        },
+        {
+          "id": "MAGNETOMETER_SENSITIVITY",
+          "enable": "true",
+          "frequency": "12.5"
+        },
+        {
+          "id": "RAW_MAGNETOMETER",
+          "enable": "true",
+          "frequency": "12.5"
+        },
+        {
+          "id": "SEQUENCE_NUMBER_MAGNETOMETER",
+          "enable": "true",
+          "frequency": "12.5"
+        },
+        {
+          "id": "BATTERY",
+          "enable": "true"
+        }
+      ]
+    },
+    {
+      "required": "false",
+      "enable": "true",
+      "minConnectionInterval": "10",
+      "saveRaw": "true",
+      "platformType": "MOTION_SENSE_HRV_PLUS_GEN2",
+      "sensors": [
+        {
+          "id": "ACCELEROMETER",
+          "enable": "true",
+          "frequency": "25",
+          "sensitivity": "4"
+        },
+        {
+          "id": "GYROSCOPE",
+          "enable": "true",
+          "frequency": "25",
+          "sensitivity": "500"
+        },
+        {
+          "id": "SEQUENCE_NUMBER_MOTION_SENSOR",
+          "enable": "true",
+          "frequency": "25"
+        },
+        {
+          "id": "RAW_MOTION_SENSOR",
+          "enable": "true",
+          "frequency": "25"
+        },
+        {
+          "id": "MAGNETOMETER",
+          "enable": "true",
+          "frequency": "25"
+        },
+        {
+          "id": "SEQUENCE_NUMBER_MAGNETOMETER",
+          "enable": "true"
+        },
+        {
+          "id": "RAW_MAGNETOMETER",
+          "enable": "true"
+        },
+        {
+          "id": "PPG",
+          "enable": "true",
+          "frequency": "25",
+          "ppgFiltered": "false",
+          "ppgRed": "62",
+          "ppgGreen": "104",
+          "ppgInfrared": "20"
+        },
+        {
+          "id": "SEQUENCE_NUMBER_PPG",
+          "enable": "true"
+        },
+        {
+          "id": "RAW_PPG",
+          "enable": "true"
+        },
+        {
+          "id": "BATTERY",
+          "enable": "true"
+        }
+      ]
+    }
+  ]
+}
