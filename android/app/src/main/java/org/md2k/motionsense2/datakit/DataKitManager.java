@@ -42,6 +42,7 @@ import org.md2k.motionsense2.device.Data;
 import org.md2k.motionsense2.device.DeviceInfo;
 import org.md2k.motionsense2.device.Sensor;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -58,21 +59,31 @@ public class DataKitManager {
         dataKitAPI.connect(onConnectionListener);
     }
 
-    private DataSourceClient register(DeviceInfo deviceInfo, String dataSourceType) throws DataKitException {
+    private DataSourceClient register(DeviceInfo deviceInfo, String[] fields, String dataSourceType) throws DataKitException {
         Platform p = new PlatformBuilder()
                 .setType(deviceInfo.getPlatformType())
                 .setId(deviceInfo.getPlatformId())
                 .setMetadata(METADATA.VERSION_FIRMWARE, deviceInfo.getVersion())
                 .setMetadata(METADATA.DEVICE_ID, deviceInfo.getDeviceId()).build();
-        DataSourceBuilder d = new DataSourceBuilder().setType(dataSourceType).setPlatform(p);
+        DataSourceBuilder d = new DataSourceBuilder().setType(dataSourceType).setDataDescriptors(createDataDescriptor(fields)).setPlatform(p);
         return dataKitAPI.register(d);
     }
+    private ArrayList<HashMap<String, String>> createDataDescriptor(String[] fields){
+        ArrayList<HashMap<String, String>> desc = new ArrayList<>();
+        for (String field : fields) {
+            HashMap<String, String> h = new HashMap<>();
+            h.put("NAME", field);
+            desc.add(h);
+        }
+        return desc;
+    }
+
 
     public void insert(Data data) throws DataKitException {
         Sensor s = Sensor.getSensor(data.getSensorId());
         DataSourceClient dc = dataSourceClients.get(data.getDeviceInfo().getDeviceId() + " " + s.getDataSourceType());
         if (dc == null) {
-            dc = register(data.getDeviceInfo(), s.getDataSourceType());
+            dc = register(data.getDeviceInfo(), s.getElements(), s.getDataSourceType());
             dataSourceClients.put(data.getDeviceInfo().getDeviceId() + " " + s.getDataSourceType(), dc);
         }
         DataTypeDoubleArray d = new DataTypeDoubleArray(data.getTimestamp(), data.getSample());

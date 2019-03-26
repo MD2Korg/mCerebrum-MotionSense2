@@ -197,31 +197,6 @@ class _SettingsPageState extends State<SettingsPage> {
     return new Scaffold(
       appBar: AppBar(elevation: 4.0, title: Text("MotionSense Devices")),
       floatingActionButton: _buildScanningButton(),
-/*
-        body: Container(
-            height: double.infinity,
-            child: SingleChildScrollView(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-
-                  Container(
-                    color: Theme.of(context).highlightColor,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Center(
-                        child: Text("Settings",
-                            style: Theme.of(context).textTheme.title),
-                      ),
-                    ),
-                  ),
-                ]
-                )
-            )
-        )
-*/
-
       body: new Column(
         children: <Widget>[
           (isScanning) ? _buildProgressBarTile() : new Container(),
@@ -231,7 +206,7 @@ class _SettingsPageState extends State<SettingsPage> {
               padding: const EdgeInsets.all(16.0),
               child: Center(
                 child: Text("Configured Devices",
-                    style: Theme.of(context).textTheme.title),
+                    style: Theme.of(context).textTheme.subtitle),
               ),
             ),
           ),
@@ -239,7 +214,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ? Container(
                   padding: const EdgeInsets.symmetric(vertical: 20.0),
                   child: Text("Not configured yet",
-                      style: TextStyle(fontSize: 16)),
+                      style: TextStyle(fontSize: 14)),
                 )
               : Column(children: createList()),
           Container(
@@ -248,7 +223,7 @@ class _SettingsPageState extends State<SettingsPage> {
               padding: const EdgeInsets.all(16.0),
               child: Center(
                 child: Text("Available Devices",
-                    style: Theme.of(context).textTheme.title),
+                    style: Theme.of(context).textTheme.subtitle),
               ),
             ),
           ),
@@ -275,9 +250,9 @@ class _SettingsPageState extends State<SettingsPage> {
                         MotionSenseGen2Page(m["deviceId"], configuration)));
           },
           child: ListTile(
-              title: Text(m["deviceName"]),
-              subtitle: Text(m["deviceId"]),
-              trailing: Text(m["platformId"]))));
+              title: Text(m["deviceName"], style: TextStyle(fontSize: 14),),
+              subtitle: Text(m["deviceId"], style: TextStyle(fontSize: 12),),
+              trailing: Text(m["platformId"], style: TextStyle(fontSize: 14),))));
     }
     return list;
   }

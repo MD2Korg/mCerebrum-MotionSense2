@@ -46,42 +46,65 @@ class _MainPageState extends State<MainPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               ListTile(
-                  leading: Icon(Icons.play_circle_filled),
+//                  leading: Icon(Icons.play_circle_filled),
                   title: Text(
                     "Data Collection",
                     style: TextStyle(fontSize: 16),
                   ),
                   subtitle: _summary.isRunning()
                       ? Text(_summary.getRunningTime())
-                      : Text('stopped'),
+                      : null, //Text('stopped'),
                   trailing: !_summary.isRunning()
-                      ? new FlatButton(
-                          textColor: Colors.white,
+                      ? new OutlineButton(
                           color: Colors.green,
-//                  borderSide: BorderSide(color: Colors.green),
+                          shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(10.0)),
+                          textColor: Colors.green,
                           onPressed: () {
                             Motionsense.setBackgroundService(true);
-                            //setToDefault();
                           },
-                          child:
-                              new Text("Start", style: TextStyle(fontSize: 16)),
-                        )
-                      : new FlatButton(
-                          textColor: Colors.white,
+                          child: Icon(
+                            Icons.play_circle_outline,
+                            color: Colors.green,
+                          ) //new Text("Delete", style: TextStyle(fontSize: 14)),
+                          )
+                      : new OutlineButton(
                           color: Colors.red,
-                          //                 borderSide: BorderSide(color: Colors.red),
+                          shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(10.0)),
+                          textColor: Colors.red,
                           onPressed: () {
                             Motionsense.setBackgroundService(false);
                           },
-                          child:
-                              new Text("Stop", style: TextStyle(fontSize: 16)),
-                        )),
+                          child: Icon(
+                            Icons.pause_circle_outline,
+                            color: Colors.red,
+                          ) //new Text("Delete", style: TextStyle(fontSize: 14)),
+                          )),
               ListTile(
-                leading: Icon(Icons.settings),
+//                leading: Icon(Icons.settings),
                 title: Text(
                   "Settings",
                   style: TextStyle(fontSize: 16),
                 ),
+                trailing: new OutlineButton(
+                    color: Colors.green,
+                    shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(10.0)),
+                    textColor: Colors.green,
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          new MaterialPageRoute(
+                              builder: (_context) => new SettingsPage()));
+                    },
+                    child: Icon(
+                      Icons.settings,
+                      color: Colors.green,
+                    ) //new Text("Delete", style: TextStyle(fontSize: 14)),
+                    ),
+
+/*
                 trailing: new FlatButton(
                   textColor: Colors.white,
                   color: Colors.green,
@@ -92,6 +115,14 @@ class _MainPageState extends State<MainPage> {
                             builder: (_context) => new SettingsPage()));
                   },
                   child: new Text("Open", style: TextStyle(fontSize: 16)),
+                ),
+*/
+              ),
+              Container(
+                color: Theme.of(context).highlightColor,
+                child: Center(
+                  child: Text("Data Summary",
+                      style: Theme.of(context).textTheme.title),
                 ),
               ),
               Expanded(

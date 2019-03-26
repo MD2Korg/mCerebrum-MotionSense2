@@ -30,14 +30,26 @@ public enum  Sensor {
     ACCELEROMETER(0, "ACCELEROMETER", "Accelerometer", new String[]{"X","Y", "Z"}),
     GYROSCOPE(1, "GYROSCOPE", "Gyroscope", new String[]{"X","Y", "Z"}),
     SEQUENCE_NUMBER_MOTION_SENSOR(2, "SEQUENCE_NUMBER_MOTION_SENSOR", "Seq Number(Motion)", new String[]{"SEQ"}),
-    RAW_MOTION_SENSOR(3, "RAW_MOTION_SENSOR", "Raw (Motion)",null),
+    RAW_MOTION_SENSOR(3, "RAW_MOTION_SENSOR", "Raw (Motion)",fill(14)),
+
     MAGNETOMETER(4, "MAGNETOMETER", "Magnetometer", new String[]{"X","Y", "Z"}),
     SEQUENCE_NUMBER_MAGNETOMETER(5, "SEQUENCE_NUMBER_MAGNETOMETER","Seq Number(Mag)", new String[]{"SEQ"}),
-    RAW_MAGNETOMETER(6, "RAW_MAGNETOMETER", "Raw(Mag)",null),
-    PPG(7, "PPG", "PPG", new String[]{"X","Y", "Z"}),
+    RAW_MAGNETOMETER(6, "RAW_MAGNETOMETER", "Raw(Mag)", fill(14)),
+
+    PPG(7, "PPG", "PPG", new String[]{"Infra-red1","Infra-red2", "red1", "red2"}),
     SEQUENCE_NUMBER_PPG(8, "SEQUENCE_NUMBER_PPG", "Seq Number(PPG)", new String[]{"SEQ"}),
-    RAW_PPG(9, "RAW_PPG", "Raw (PPG)",null),
-    BATTERY(10, "BATTERY", "Battery", new String[]{"Battery"});
+    RAW_PPG(9, "RAW_PPG", "Raw (PPG)",fill(14)),
+
+    PPG_FILTER(10, "PPG_FILTER", "PPG (Filter)", new String[]{"Infra-red1","Infra-red2", "red1", "red2"}),
+    SEQUENCE_NUMBER_PPG_FILTER(11, "SEQUENCE_NUMBER_PPG_FILTER", "Seq Number(PPG Filter)", new String[]{"SEQ"}),
+    RAW_PPG_FILTER(12, "RAW_PPG_FILTER", "Raw (PPG Filter)",fill(18)),
+
+    PPG_FILTER_DC(13, "PPG_FILTER_DC", "PPG (Filter DC)", new String[]{"Infra-red1","Infra-red2", "red1", "red2"}),
+    SEQUENCE_NUMBER_PPG_FILTER_DC(14, "SEQUENCE_NUMBER_PPG_FILTER_DC", "Seq Number(PPG Filter DC)", new String[]{"SEQ"}),
+    RAW_PPG_FILTER_DC(15, "RAW_PPG_FILTER_DC", "Raw (PPG Filter DC)",fill(18)),
+
+    BATTERY(16, "BATTERY", "Battery", new String[]{"Battery"});
+
 
     int id;
     String dataSourceType;
@@ -70,5 +82,12 @@ public enum  Sensor {
 
     public String[] getElements() {
         return elements;
+    }
+    private static String[] fill(int num){
+        String[] filled = new String[num];
+        for(int i=0;i<num;i++){
+            filled[i]="C"+Integer.toString(i);
+        }
+        return filled;
     }
 }

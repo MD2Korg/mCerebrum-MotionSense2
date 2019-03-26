@@ -42,25 +42,25 @@ import java.util.UUID;
 import io.reactivex.Observable;
 import io.reactivex.functions.Function;
 
-public class CharacteristicPPG extends Characteristics {
-    private static final UUID CHARACTERISTICS = UUID.fromString("DA39C925-1D81-48E2-9C68-D0AE4BBD351F");
+public class CharacteristicPPGFilteredDc extends Characteristics {
+    private static final UUID CHARACTERISTICS = UUID.fromString("DA39C926-1D81-48E2-9C68-D0AE4BBD351F");
     private static final int MAX_SEQUENCE_NUMBER = 65536;
     private int lastSequenceNumber = -1;
     private long lastCorrectedTimestamp = -1;
     private double[] ppgLast = new double[0];
     private double[] sequenceNumberLast = new double[0];
     private double[] rawLast = new double[0];
-    private static final int PPG = Sensor.PPG.getId();
-    private static final int SEQUENCE_NUMBER_PPG = Sensor.SEQUENCE_NUMBER_PPG.getId();
-    private static final int RAW_PPG = Sensor.RAW_PPG.getId();
-    CharacteristicPPG() {
-        super(new Sensor[]{Sensor.PPG, Sensor.SEQUENCE_NUMBER_PPG, Sensor.RAW_PPG});
+    private static final int PPG_FILTER_DC = Sensor.PPG_FILTER_DC.getId();
+    private static final int SEQUENCE_NUMBER_PPG_FILTER_DC = Sensor.SEQUENCE_NUMBER_PPG_FILTER_DC.getId();
+    private static final int RAW_PPG_FILTER_DC = Sensor.RAW_PPG_FILTER_DC.getId();
+    CharacteristicPPGFilteredDc() {
+        super(new Sensor[]{Sensor.PPG_FILTER_DC, Sensor.SEQUENCE_NUMBER_PPG_FILTER_DC, Sensor.RAW_PPG_FILTER_DC});
     }
 
     @Override
     public boolean isEnable(ConfigDevice configDevice) {
         ConfigSensor configSensor = configDevice.getSensor(Sensor.PPG.getDataSourceType());
-        return configSensor.isEnable() && !configSensor.isPPGFiltered();
+        return configSensor.isEnable() && configSensor.isPPGFiltered();
     }
 
     @Override
@@ -68,9 +68,9 @@ public class CharacteristicPPG extends Characteristics {
         super.setSensorInfos();
         boolean enable = isEnable(configDevice);
         boolean raw = configDevice.isSaveRaw();
-        getSensorInfo(PPG).setEnable(enable);
-        getSensorInfo(SEQUENCE_NUMBER_PPG).setEnable(enable && raw);
-        getSensorInfo(RAW_PPG).setEnable(enable && raw);
+        getSensorInfo(PPG_FILTER_DC).setEnable(enable);
+        getSensorInfo(SEQUENCE_NUMBER_PPG_FILTER_DC).setEnable(enable && raw);
+        getSensorInfo(RAW_PPG_FILTER_DC).setEnable(enable && raw);
         return super.getSensorInfos();
     }
 
@@ -86,17 +86,17 @@ public class CharacteristicPPG extends Characteristics {
                     public Observable<Data> apply(byte[] bytes) throws Exception {
                         long curTime = DateTime.getDateTime();
                         ArrayList<Data> data = new ArrayList<>();
-                        ppgLast = getPPG(bytes);
+                        ppgLast = getFilteredPPG(bytes);
                         rawLast = getRaw(bytes);
                         int sequenceNumber = getSequenceNumber(bytes);
                         sequenceNumberLast = new double[]{sequenceNumber};
                         long correctedTimestamp = correctTimeStamp(sequenceNumber, curTime, lastSequenceNumber, lastCorrectedTimestamp, cPPG.getFrequency(), MAX_SEQUENCE_NUMBER);
                         if (cPPG.isEnable()) {
-                            data.add(new Data(PPG, correctedTimestamp, ppgLast));
+                            data.add(new Data(PPG_FILTER_DC, correctedTimestamp, ppgLast));
                         }
                         if (isSaveRaw) {
-                            data.add(new Data(RAW_PPG, correctedTimestamp, rawLast));
-                            data.add(new Data(SEQUENCE_NUMBER_PPG, correctedTimestamp, sequenceNumberLast));
+                            data.add(new Data(RAW_PPG_FILTER_DC, correctedTimestamp, rawLast));
+                            data.add(new Data(SEQUENCE_NUMBER_PPG_FILTER_DC, correctedTimestamp, sequenceNumberLast));
                         }
                         lastCorrectedTimestamp = correctedTimestamp;
                         lastSequenceNumber = sequenceNumber;
@@ -106,22 +106,22 @@ public class CharacteristicPPG extends Characteristics {
                     }
                 });
     }
-
     /**
-     * Infra-red 1: bytes 13-11
-     * Infra-red 2: bytes 10-8
-     * Green/Red 1: bytes 7-5
-     * Green/Red 2: bytes 4-2
+     * Infra-red 1: bytes 17-14
+     * Infra-red 2: bytes 13-10
+     * Green/Red 1: bytes 9-6
+     * Green/Red 2: bytes 5-2
      * Counter: bytes 1-0
      */
-    private double[] getPPG(byte[] bytes) {
+    private double[] getFilteredPPG(byte[] bytes) {
         double[] sample = new double[4];
-        sample[0] = convertPPGValues(bytes[0], bytes[1], bytes[2]);
-        sample[1] = convertPPGValues(bytes[3], bytes[4], bytes[5]);
-        sample[2] = convertPPGValues(bytes[6], bytes[7], bytes[8]);
-        sample[3] = convertPPGValues(bytes[9], bytes[10], bytes[11]);
+        sample[0] = convertFilteredPPGValues(bytes[0], bytes[1], bytes[2], bytes[3]);
+        sample[1] = convertFilteredPPGValues(bytes[4], bytes[5], bytes[6], bytes[7]);
+        sample[2] = convertFilteredPPGValues(bytes[8], bytes[9], bytes[10], bytes[11]);
+        sample[3] = convertFilteredPPGValues(bytes[12], bytes[13], bytes[14], bytes[15]);
         return sample;
     }
+
 
     /**
      * each ppg dc value is of type 32-bit single-precision float sent over the channels in an
@@ -129,9 +129,12 @@ public class CharacteristicPPG extends Characteristics {
      * Channel Infra-red floatcast[0] corresponds to the MSB and floatcast[3] is the LSB. The
      * counter is also in little-endian form
      */
-    private static int convertPPGValues(byte intcast2, byte intcast1, byte intcast0) {
-        return (int) (intcast2 << 16 | intcast1 << 8 | intcast0); //TODO: This needs testing.
+    private static double convertFilteredPPGValues(byte floatcast3, byte floatcast2, byte floatcast1, byte floatcast0) {
+
+        return (double) (floatcast0 << 24 | floatcast1 << 16 | floatcast2 << 8 | floatcast3); //TODO: This needs testing.
     }
+
+
 
 
     private int getSequenceNumber(byte[] data) {

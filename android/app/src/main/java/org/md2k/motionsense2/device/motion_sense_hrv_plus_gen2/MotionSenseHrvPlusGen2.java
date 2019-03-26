@@ -53,7 +53,9 @@ public class MotionSenseHrvPlusGen2 extends Device {
         characteristics.add(new CharacteristicMotionSense());
         characteristics.add(new CharacteristicMagnetometer());
         characteristics.add(new CharacteristicPPG());
-//        characteristics.add(new CharacteristicBattery());
+        characteristics.add(new CharacteristicPPGFiltered());
+        characteristics.add(new CharacteristicPPGFilteredDc());
+        characteristics.add(new CharacteristicBattery());
         characteristicConfig = new CharacteristicConfig();
     }
     @Override

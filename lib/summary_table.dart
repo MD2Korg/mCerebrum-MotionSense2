@@ -17,7 +17,6 @@ class DataSourceInfo {
   final int dataCount;
   final double frequency;
   final List<double> lastSample;
-  bool selected = false;
 }
 
 class DataSourceInfos extends DataTableSource {
@@ -43,7 +42,6 @@ class DataSourceInfos extends DataTableSource {
     }
   }
 
-  int _selectedCount = 0;
 
   @override
   DataRow getRow(int index) {
@@ -52,15 +50,21 @@ class DataSourceInfos extends DataTableSource {
     final DataSourceInfo sensor = _dataSourceInfos[index];
     return DataRow.byIndex(
         index: index,
+/*
         onSelectChanged: (bool selected){
           Motionsense.plot(sensor.platformType, sensor.platformId, sensor.sensorType);
           print("abc");
         },
+*/
         cells: <DataCell>[
           DataCell(Text('${sensor.deviceName}')),
           DataCell(Text('${sensor.sensorTitle}')),
           DataCell(Text('${sensor.dataCount}')),
           DataCell(Text('${sensor.frequency.toStringAsFixed(2)}')),
+          DataCell(sensor.sensorType.startsWith("RAW")?SizedBox():Icon(Icons.multiline_chart, color: Colors.green,), onTap:(){
+            if(sensor.sensorType.startsWith("RAW")) return;
+            Motionsense.plot(sensor.platformType, sensor.platformId, sensor.sensorType);
+          }),
         ]);
   }
 
@@ -72,7 +76,7 @@ class DataSourceInfos extends DataTableSource {
   bool get isRowCountApproximate => false;
 
   @override
-  int get selectedRowCount => _selectedCount;
+  int get selectedRowCount => 0;
 }
 
 class DataSourceTable extends StatelessWidget {
@@ -88,14 +92,8 @@ class DataSourceTable extends StatelessWidget {
         ? SizedBox()
         : ListView(children: <Widget>[
             PaginatedDataTable(
-                header: Container(
-                  color: Theme.of(context).highlightColor,
-                  child: Center(
-                    child:
-                        Text("Data", style: Theme.of(context).textTheme.title),
-                  ),
-                ),
-                rowsPerPage: PaginatedDataTable.defaultRowsPerPage,
+                header: SizedBox(height: 0,),
+                rowsPerPage: 20,
                 onRowsPerPageChanged: (int value) {},
                 columns: <DataColumn>[
                   DataColumn(label: const Text('Device')),
@@ -108,6 +106,7 @@ class DataSourceTable extends StatelessWidget {
                   DataColumn(
                     label: const Text('Frequency'),
                   ),
+                  DataColumn(label: const Text('Plot')),
                 ],
                 source: _dataSourceInfos)
           ]);

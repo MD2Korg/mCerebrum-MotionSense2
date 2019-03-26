@@ -45,7 +45,7 @@ import io.reactivex.functions.Function;
 public class CharacteristicBattery extends Characteristics {
     private static final UUID CHARACTERISTICS = UUID.fromString("00002A19-0000-1000-8000-00805f9b34fb");
     private static final int  BATTERY = Sensor.BATTERY.getId();
-    double[] battery=new double[0];
+    private double[] battery=new double[0];
 
     protected CharacteristicBattery() {
         super(new Sensor[]{Sensor.BATTERY});

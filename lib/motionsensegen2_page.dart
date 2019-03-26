@@ -78,9 +78,10 @@ class _MotionSenseGen2PageState extends State<MotionSenseGen2Page> {
                 "Set Configuration",
                 style: TextStyle(fontSize: 14),
               ),
-              trailing: new FlatButton(
+              trailing: new OutlineButton(
                 color: Colors.green,
-                textColor: Colors.white,
+                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(10.0)),
+                textColor: Colors.green,
                 onPressed: () {
                   setToDefault();
                 },
@@ -93,14 +94,15 @@ class _MotionSenseGen2PageState extends State<MotionSenseGen2Page> {
                 "Delete Device",
                 style: TextStyle(fontSize: 14),
               ),
-              trailing: new FlatButton(
+              trailing: new OutlineButton(
                 color: Colors.red,
-                textColor: Colors.white,
+                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(10.0)),
+                textColor: Colors.red,
                 onPressed: () {
                   configuration.deleteDevice(id);
                   Navigator.pop(context);
                 },
-                child: new Text("Delete", style: TextStyle(fontSize: 14)),
+                child: Icon(Icons.remove_circle, color: Colors.red,)//new Text("Delete", style: TextStyle(fontSize: 14)),
               ),
             ),
             ListTile(

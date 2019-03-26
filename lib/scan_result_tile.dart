@@ -107,28 +107,22 @@ class _ScanResultTileState extends State<ScanResultTile> {
         ),
         ): SizedBox(),
         SizedBox(height: 10,),
-        new RaisedButton(
-          padding: const EdgeInsets.all(8.0),
-//          textColor: Colors.white,
-//          color: Colors.blue,
-          onPressed: save,
-          child: new Text("Add"),
+        new OutlineButton(
+            color: Colors.green,
+            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(10.0)),
+            textColor: Colors.green,
+            onPressed: () {
+              save();
+            },
+
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+              Icon(Icons.add_circle_outline, color: Colors.green,), //new Text("Delete", style: TextStyle(fontSize: 14)),
+              Text("Add")//new Text("Delete", style: TextStyle(fontSize: 14)),
+          ])
         ),
-/*
-        _buildAdvRow(
-            context, 'Complete Local Name', result.advertisementData.localName),
-        _buildAdvRow(
-            context,
-            'Service UUIDs',
-            (result.advertisementData.serviceUuids.isNotEmpty)
-                ? result.advertisementData.serviceUuids.join(', ').toUpperCase()
-                : 'N/A'),
-        _buildAdvRow(
-            context,
-            'Firmware Version',
-            getNiceServiceData(result.advertisementData.serviceData) ??
-                '1.0.0'),
-*/
       ],
     );
   }

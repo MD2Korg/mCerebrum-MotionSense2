@@ -92,10 +92,10 @@ public class CharacteristicMagnetometer extends Characteristics {
                         rawLast = getRaw(bytes);
                         int sequenceNumber = getSequenceNumber(bytes);
                         sequenceNumberLast = new double[]{sequenceNumber};
-                        long correctedTimestamp = correctTimeStamp(sequenceNumber, curTime, lastSequenceNumber, lastCorrectedTimestamp, cMagnetometer.getFrequency(), MAX_SEQUENCE_NUMBER);
-                        //TODO:
+                        long correctedTimestamp = correctTimeStamp(sequenceNumber, curTime, lastSequenceNumber, lastCorrectedTimestamp, cMagnetometer.getFrequency()/2, MAX_SEQUENCE_NUMBER);
+                        long correctTimestamp2 = (long) (correctedTimestamp - (1000.0 / (cMagnetometer.getFrequency() * 2.0)));
                         data.add(new Data(MAGNETOMETER, correctedTimestamp, mag1));
-                        data.add(new Data(MAGNETOMETER, correctedTimestamp, mag2));
+                        data.add(new Data(MAGNETOMETER, correctTimestamp2, mag2));
                         magnetometerLast = mag2;
                         if (isSaveRaw) {
                             data.add(new Data(RAW_MAGNETOMETER, correctedTimestamp, rawLast));
